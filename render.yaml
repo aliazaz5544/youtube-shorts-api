@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: youtube-shorts-api
+    env: python
+    buildCommand: "pip install -r requirements.txt && apt-get install -y ffmpeg"
+    startCommand: "gunicorn main:app"
+    plan: free
