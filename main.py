@@ -60,10 +60,15 @@ def download_and_cut():
 
         os.remove(output_path)
 
+        with open(short_path, "rb") as f:
+            video_data = base64.b64encode(f.read()).decode("utf-8")
+
+        os.remove(short_path)
+
         return jsonify({
             "success": True,
-            "video_path": short_path,
-            "video_id": video_id
+            "video_id": video_id,
+            "video_data": video_data
         })
 
     except Exception as e:
