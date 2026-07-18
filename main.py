@@ -4,6 +4,7 @@ import subprocess
 import os
 import uuid
 import imageio_ffmpeg
+import base64
 
 app = Flask(__name__)
 
