@@ -3,6 +3,7 @@ import yt_dlp
 import subprocess
 import os
 import uuid
+import imageio_ffmpeg
 
 app = Flask(__name__)
 
@@ -20,6 +21,7 @@ def download_and_cut():
     if not url:
         return jsonify({"error": "No URL provided"}), 400
     
+    ffmpeg_path = imageio_ffmpeg.get_ffmpeg_exe()
     video_id = str(uuid.uuid4())
     output_path = f"/tmp/{video_id}.mp4"
     short_path = f"/tmp/{video_id}_short.mp4"
@@ -33,9 +35,9 @@ def download_and_cut():
             ydl.download([url])
         
         subprocess.run([
-            'ffmpeg', '-i', output_path,
-            '-ss', start_time,
-            '-t', duration,
+            ffmpeg_path, '-i', output_path,
+            '-ss', str(start_time),
+            '-t', str(duration),
             '-vf', 'scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2',
             '-c:v', 'libx264',
             '-c:a', 'aac',
